@@ -1,23 +1,26 @@
 <?php
 
-require_once('model/GetDataFromDB.php');
-require_once('controller/MainController.php');
-require_once('view/LayoutView.php');
-
 //MAKE SURE ERRORS ARE SHOWN... MIGHT WANT TO TURN THIS OFF ON A PUBLIC SERVER
 error_reporting(E_ALL);
 ini_set('display_errors', 'On');
 
-session_start();
+require_once("Application.php");
+require_once("Settings.php");
 
-//CREATE OBJECTS OF THE VIEWS
-$v = new LoginView();
-$dtv = new DateTimeView();
-$lv = new LayoutView();
-$regV = new RegisterView();
+$settings = new Settings();
 
-// Skapa controller controller(model, view)
+$app = new Application($settings);
+$app->run();
 
+
+
+// TODO should not be hardcoded!
+//$isLoggedIn = false; // should get in från UserCredentialsModel
+
+// Skapa MasterController, controller(model, view)
+
+// TODO this looks baaaaad
+//$layoutV->render($isLoggedIn, $logInV, $dateV, $registerV, $newUserRegister);
 
 /*controller, kolla state, kolla input, ev ändra state
 

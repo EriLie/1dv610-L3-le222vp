@@ -1,12 +1,14 @@
 <?php
 
+namespace View;
+
 class DateTimeView {
 
 	/**
 	 * Renders the time and date
 	 */
 	public function show() {
-		$now = new DateTime('now', new DateTimeZone('Europe/Berlin'));
+		$now = new \DateTime('now', new \DateTimeZone('Europe/Berlin'));
 
 		$day = $now->format('l');
 		$dayDate = $now->format('jS');

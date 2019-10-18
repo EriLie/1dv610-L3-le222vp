@@ -1,5 +1,7 @@
 <?php
 
+namespace View;
+
 class RegisterView {
     private static $username = 'RegisterView::UserName';
 	private static $newMessage = 'RegisterView::Message';
@@ -8,7 +10,7 @@ class RegisterView {
 	private static $addRegistration = 'RegisterView::Register';
 
     private $message = '';
-    private $minCharUsername = 3;
+    private $minCharUsername = 3; // TODO should this be in the model to?
     private $minCharpassword = 6;
 
     public function response($message) {

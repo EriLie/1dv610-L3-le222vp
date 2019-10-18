@@ -1,6 +1,21 @@
 <?php
 
+namespace Model;
 
+class UserStorageModel {
+    
+
+	public function loadUser() {
+		
+    }
+    
+	public function saveUser(UserName $toBeSaved) {
+		
+	}
+
+}
+
+/*
 //Connect with database
 $config = include('settings.php');
 $connect = mysqli_connect($config->host, $config->username, $config->password, $config->database);
@@ -18,6 +33,7 @@ $result = mysqli_query($connect, $sql);
 
 // Fix assorted array
 $allUsers = mysqli_fetch_all($result, MYSQLI_ASSOC);
+// TODO dölja i klass
 //print_r($allUsers);
 
 // free result from memory
@@ -30,3 +46,4 @@ foreach($allUsers as $user) {
     echo '<h1>' . $user['username'] . '<h1>';
    
 }
+*/
