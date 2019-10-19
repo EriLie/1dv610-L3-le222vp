@@ -4,6 +4,14 @@ namespace Model;
 
 class UserStorageModel {
     
+    public function __construct($settings) {
+        
+    }
+    
+    public function logIn($username, $password) {
+
+    }
+
 
 	public function loadUser() {
 		

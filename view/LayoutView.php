@@ -42,7 +42,6 @@ class LayoutView {
             $link = '<a href="?register">Register a new user</a>';
         }
         
-        
         return $link;
     }
     

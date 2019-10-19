@@ -1,48 +1,53 @@
 <?php
 
-require_once('model/UserStorageModel.php');
+
+
+require_once('controller/LoginController.php');
 require_once('controller/MainController.php');
+
 require_once('view/LayoutView.php');
 require_once('view/LoginView.php');
 require_once('view/DateTimeView.php');
 require_once('view/RegisterView.php');
 
-//include 'view/LoginView.php';
-
-
-
-
 class Application {
     
     //CREATE OBJECTS OF THE VIEWS
-    private $logInV;
+    private $logInView;
     private $dateV;
     private $layoutV;
     private $registerV;
 
-    private $userStorage; 
+    //private $userStorage; 
      
     private $isLoggedIn;
-    private $newUserRegister;
+    private $newUserRegister = false; // TODO
 
     public function __construct($settings) {
-        $this->userStorage = new \Model\UserStorageModel($settings);
-
-        $this->logInV = new \View\LoginView();
         $this->dateV = new \View\DateTimeView();
         $this->layoutV = new \View\LayoutView();
         $this->registerV = new \View\RegisterView();
-		//$this->storage = new \Model\UserStorage($settings);
-		//$this->user = $this->storage->loadUser();
-	
+        $this->logInView = new \View\LoginView();
+
+        $this->LoginController = new \Controller\LoginController($settings, $this->logInView);
+
+        $this->isLoggedIn = $this->LoginController->getBoolIsLoggedIn();
+        
     }
     
 	public function run() {
+        $this->checkState();        
 		$this->changeState();
 		$this->generateOutput();
     }
+
+    private function checkState() {
+       
+
+    }
     
 	private function changeState() {
+        
 		//$this->logInV->response($isLoggedIn);
 		
     }
@@ -52,7 +57,7 @@ class Application {
 
 		$this->layoutV->render(
             $this->isLoggedIn, 
-            $this->logInV, 
+            $this->logInView, 
             $this->dateV, 
             $this->registerV, 
             $this->newUserRegister

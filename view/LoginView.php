@@ -14,7 +14,54 @@ class LoginView {
 
 	private $message = '';
 	
-	private $inputPostName = '';
+    private $inputPostName = '';
+    private $hashPassword = '';
+
+    public function checkPost() {
+        $this->submitPost();
+    }
+
+    private function submitPost() {
+        if(isset($_POST[self::$submitLogin])) {
+            $nameIsSet = $this->handleUsernamePost();
+            $passwordIsSet = $this->handlePasswordPost();
+        }
+    }
+    
+    private function handleUsernamePost() {
+        $user = $_POST[self::$name];
+
+        if(empty($user)) {
+            $this->message = 'Username is missing';
+            return false;
+        } else {
+            $this->inputPostName = $user;
+            return true;
+        }
+    }
+
+    private function handlePasswordPost() {
+        $password = $_POST[self::$password];
+
+        if(empty($password)) {
+            $this->message = 'Password is missing';
+        } else {
+            $this->hashPassword = $password;
+        }
+    }
+
+    public function controlIfLoggedIn() : bool {
+	    $isLoggedIn = false;
+        
+		 // // inloggad? TODO
+        // inloggad med kaka? Anrop 
+        // inloggad med session?
+			
+		
+		
+
+		return $isLoggedIn;
+	}
 
     /**
 	 * Create HTTP response
@@ -25,16 +72,11 @@ class LoginView {
 	 */
 	public function response($isLoggedIn) {
 		$response;
-
 	
 		if ($isLoggedIn) {
 			$response = $this->generateLogoutButtonHTML($this->message);			
 		} else {
 			$response = $this->generateLoginFormHTML($this->message);
-		}
-			
-		if(isset($_SESSION['userLoggedIn'])) {
-			//$response = $this->loggedIn() . $this->generateLogoutButtonHTML($message);
 		}
 	        
 		return $response;
