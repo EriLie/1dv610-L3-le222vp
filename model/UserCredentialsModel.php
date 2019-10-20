@@ -3,31 +3,50 @@
 namespace Model;
 
 // TODO split this up ino username and password
-require_once('UsernameModel.php');
-require_once('PasswordModel.php');
+//require_once('UsernameModel.php');
+//require_once('PasswordModel.php');
 require_once('UserStorageModel.php');
 
-class UserCredentialsModel {
-    private $username;
-    private $password;
+// TODO change to controller for USerStorage?
 
+class UserCredentialsModel {
     private $userStorage;
 
-    public function __construct($settings) {
-        $this->userStorage = new UserStorageModel($settings);
+    public function __construct() {
+        $this->userStorage = new UserStorageModel();
     }
 
-    function userCredentialsModel($username, $password) {
-
-        $this->username = $username;
-        $this->password = $password;
+    public function userExist($username) : bool {
+        return $this->userStorage->usernameExist($username);
     }
 
-    function getUsername() {
-        return $this->username;
+    public function passwordExist($pwd) : bool {
+        return $this->userStorage->passwordExist($pwd);
     }
 
-    function setUserName($username) {
-        $this->username = $username;
+    public function tryToLogIn($username, $password) : bool {
+        $userCanLogIn = $this->userStorage->authenticateUser($username, $password);
+  
+        if($userCanLogIn) {
+            $_SESSION['userLoggedIn'] = true;
+            return true;
+        } else {
+            return false;
+        }
     }
+
+    public function isLoggedInWithSession() : bool {
+
+        if(isset($_SESSION['userLoggedIn'])) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function logoutSession() {
+        unset($_SESSION['userLoggedIn']);
+    }
+
+    
 }

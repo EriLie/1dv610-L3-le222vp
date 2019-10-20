@@ -4,7 +4,7 @@ namespace View;
 
 class LayoutView {
 
-    public function render($isLoggedIn, LoginView $v, DateTimeView $dtv, RegisterView $regV, $newUserRegister) {
+    public function render($isLoggedIn, LoginView $v, DateTimeView $dtv, RegisterView $regV, $goToRegister) {
         echo '<!DOCTYPE html>
             <html>
                 <head>
@@ -14,12 +14,12 @@ class LayoutView {
                 <body>
                 <h1>Assignment 2</h1>
                 <div class="linkRegister">
-                    ' . $this->newUserRegistration($isLoggedIn, $newUserRegister) . '
+                    ' . $this->presentLink($isLoggedIn, $goToRegister) . '
                 </div>
                     ' . $this->renderIsLoggedIn($isLoggedIn) . '
                 
                 <div class="container">
-                    ' . $this->rightResponse($isLoggedIn, $newUserRegister, $v, $regV) . '
+                    ' . $this->rightResponse($isLoggedIn, $goToRegister, $v, $regV) . '
         
                     ' . $dtv->show() . '
                 </div>
@@ -29,17 +29,19 @@ class LayoutView {
         ';
     }
 
-    private function newUserRegistration($isLoggedIn, $newUserRegister) {
+    public function userWantsToRegister() {
+        return isset($_GET['register']) ? true : false;
+    }
+
+    private function presentLink($isLoggedIn, $goToRegister) {
         $link = '';
         
-        if ($newUserRegister && isset($_SESSION['newRegister'])) {
+        if ($goToRegister) {
             $link = '<a href="?">Back to login</a>';
-        }
-        if($isLoggedIn) {
-            $link = '';
-        } 
-        if(!$isLoggedIn && !$newUserRegister) {
+        } else if (!$isLoggedIn) {
             $link = '<a href="?register">Register a new user</a>';
+        } else {
+            $link = '';
         }
         
         return $link;
@@ -64,10 +66,10 @@ class LayoutView {
       
     private function renderIsLoggedIn($isLoggedIn) {
         if ($isLoggedIn) {
-          return '<h2>Logged in</h2>';
+            return '<h2>Logged in</h2>';
         }
         else {
-          return '<h2>Not logged in</h2>';
+            return '<h2>Not logged in</h2>';
         }
     }  
 }

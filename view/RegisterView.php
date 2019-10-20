@@ -12,9 +12,9 @@ class RegisterView {
     private $message = '';
     private $minCharUsername = 3; // TODO should this be in the model to?
     private $minCharpassword = 6;
+    private $newUsername;
 
     public function response($message) {
-        $this->userRegistration();
 
         return '
             <h2>Register new user</h2>
@@ -45,20 +45,20 @@ class RegisterView {
         ';
     }
 
-    private function userRegistration() {
+    private function userRegistrationPosts() {
         $this->message = '';
 
         if(isset($_POST[self::$addRegistration])) {
             if(strlen($_POST[self::$username]) < $this->minCharUsername) {
-                $this->message .= 'Username has too few characters, at least 3 characters. <br>';
+                $this->message .= Messages::$nameToFewChars;
             }
 
             if(strlen($_POST[self::$password]) < $this->minCharpassword) {
-                $this->message .= 'Password has too few characters, at least 6 characters. <br>';
+                $this->message .= Messages::$pwdToFewChars;
             }
 
-            if($_POST[self::$username] == 'Admin' || $_POST[self::$username] == '') {
-                $this->message .= 'User exists, pick another username.<br>';
+            if($_POST[self::$username] == $this->newUsername || $_POST[self::$username] == '') {
+                $this->message .= Messages::$usernameTaken;
             }
             
         }

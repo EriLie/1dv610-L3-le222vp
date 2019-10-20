@@ -2,6 +2,8 @@
 
 namespace View;
 
+require_once('Messages.php');
+
 class LoginView {
     private static $submitLogin = 'LoginView::Login';
 	private static $logout = 'LoginView::Logout';
@@ -14,53 +16,88 @@ class LoginView {
 
 	private $message = '';
 	
+	
     private $inputPostName = '';
-    private $hashPassword = '';
+	private $hashPassword = '';
+	
 
-    public function checkPost() {
-        $this->submitPost();
+    public function getUsername() {
+        return $this->inputPostName;
     }
 
-    private function submitPost() {
+    public function getPassword() {
+        return $this->hashPassword;
+    }
+
+    public function submitPost() : bool {
         if(isset($_POST[self::$submitLogin])) {
-            $nameIsSet = $this->handleUsernamePost();
-            $passwordIsSet = $this->handlePasswordPost();
+            return true;
+        } else {
+            return false;
         }
-    }
+	}
+	
+	public function logoutPost() : bool {
+		if(isset($_POST[self::$logout]) && isset($_SESSION['userLoggedIn'])) {
+			$this->message = Messages::$bye;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public function keepPost() : bool {
+		if(isset($_POST[self::$keep])) {
+			return true;
+		} else {
+			return false;
+		}
+	}
     
-    private function handleUsernamePost() {
+    public function handleUsernamePost() : bool {
         $user = $_POST[self::$name];
 
         if(empty($user)) {
-            $this->message = 'Username is missing';
+            $this->message = Messages::$missingUsername;
             return false;
         } else {
             $this->inputPostName = $user;
             return true;
         }
-    }
+	}
+	
+	public function handleKeep() {
+		$cookieName = $this->inputPostName;
+		setcookie($cookieName, time() + 3600);
+	}
 
-    private function handlePasswordPost() {
+    public function handlePasswordPost() : bool {
         $password = $_POST[self::$password];
 
         if(empty($password)) {
-            $this->message = 'Password is missing';
+            $this->message = Messages::$missingPassword;
+            return false;
         } else {
             $this->hashPassword = $password;
+            return true;
         }
     }
 
-    public function controlIfLoggedIn() : bool {
-	    $isLoggedIn = false;
-        
-		 // // inloggad? TODO
-        // inloggad med kaka? Anrop 
-        // inloggad med session?
-			
-		
-		
+    public function handleNameOrPwd() {
+        $this->message = Messages::$pwdOrNameWrong;
+	}
+	
+	public function shouldWelcome() {
+		$this->message = Messages::$welcome;
+	}
 
-		return $isLoggedIn;
+    public function controlIfLoggedInWithCookie() : bool {
+	    if (isset($_COOKIE[$this->inputPostName])) {
+			$this->message = Messages::$welcomeCookie;
+			return true;
+		} else {
+			return false;
+		} 
 	}
 
     /**
@@ -74,6 +111,7 @@ class LoginView {
 		$response;
 	
 		if ($isLoggedIn) {
+
 			$response = $this->generateLogoutButtonHTML($this->message);			
 		} else {
 			$response = $this->generateLoginFormHTML($this->message);

@@ -7,9 +7,10 @@ ini_set('display_errors', 'On');
 require_once("Application.php");
 require_once("Settings.php");
 
-$settings = new Settings();
+session_start();
+//$settings = new Settings();
 
-$app = new Application($settings);
+$app = new Application();
 $app->run();
 
 
