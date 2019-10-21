@@ -10,9 +10,24 @@ class RegisterView {
 	private static $addRegistration = 'RegisterView::Register';
 
     private $message = '';
-    private $minCharUsername = 3; // TODO should this be in the model to?
+    private $minCharUsername = 3; // TODO not hardcoded!
     private $minCharpassword = 6;
+    
     private $newUsername;
+    private $pwd;
+    private $pwdRepeat;
+
+    public function getNewUsername() {
+        return $this->newUsername;
+    }
+
+    public function getPwd() {
+        return $this->pwd;
+    }
+
+    public function getPwdRepeat() {
+        return $this->pwdRepeat;
+    }
 
     public function response($message) {
 
@@ -45,11 +60,14 @@ class RegisterView {
         ';
     }
 
-    private function userRegistrationPosts() {
+
+
+    public function createMessage($nameTaken) {
         $this->message = '';
 
         if(isset($_POST[self::$addRegistration])) {
             if(strlen($_POST[self::$username]) < $this->minCharUsername) {
+
                 $this->message .= Messages::$nameToFewChars;
             }
 
@@ -57,12 +75,45 @@ class RegisterView {
                 $this->message .= Messages::$pwdToFewChars;
             }
 
-            if($_POST[self::$username] == $this->newUsername || $_POST[self::$username] == '') {
+            if($nameTaken || $_POST[self::$username] == '') {
                 $this->message .= Messages::$usernameTaken;
             }
+
+            
             
         }
 
+    }
+
+    public function addRegPost() : bool {
+        return isset($_POST[self::$addRegistration]) ? true : false;
+    }
+
+    public function usernamePost() : bool {
+        if(isset($_POST[self::$username])) {
+            $this->newUsername = $_POST[self::$username];
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function pwdPost() : bool {
+        if(isset($_POST[self::$password])) {
+            $this->pwd = $_POST[self::$password];
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function pwdRepeatPost() : bool {
+        if(isset($_POST[self::$copyPassword])) {
+            $this->pwdRepeat = $_POST[self::$copyPassword];
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

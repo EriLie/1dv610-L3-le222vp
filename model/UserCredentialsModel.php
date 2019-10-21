@@ -48,5 +48,7 @@ class UserCredentialsModel {
         unset($_SESSION['userLoggedIn']);
     }
 
-    
+    public function addUser($name, $pwd) {
+        $this->userStorage->saveUser($name, $pwd);
+    }
 }

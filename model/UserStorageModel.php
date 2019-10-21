@@ -14,6 +14,8 @@ class UserStorageModel {
     private $resultUser;
     private $resultPassword;
 
+
+
     
     public function __construct() {
         $this->settings = new \Settings();        
@@ -120,43 +122,19 @@ class UserStorageModel {
 		
     }
     
-	public function saveUser(UserName $toBeSaved) {
-		
+	public function saveUser($name, $pwd) {
+        $this->connectToDb();
+        
+        $sql = "INSERT INTO user (username, hashpassword) VALUES (?,?);";
+
+        $stmt = mysqli_stmt_init($this->connect);
+        if (mysqli_stmt_prepare($stmt, $sql)) {
+            mysqli_stmt_bind_param($stmt, "ss", $name, $pwd);
+            mysqli_stmt_execute($stmt);
+        }
     }
     
 
 
 }
 
-/*
-//Connect with database
-$config = include('settings.php');
-$connect = mysqli_connect($config->host, $config->username, $config->password, $config->database);
-//$conn = mysqli_connect("localhost", "xampp", "test1234", "user");
-
-if($connect) {
-    echo "databas connected";
-}
-
-// write a query
-$sql = 'SELECT id, username, hashpassword FROM user';
-
-// make a query ang get result
-$result = mysqli_query($connect, $sql);
-
-// Fix assorted array
-$allUsers = mysqli_fetch_all($result, MYSQLI_ASSOC);
-// TODO dölja i klass
-//print_r($allUsers);
-
-// free result from memory
-mysqli_free_result($result);
-
-// close the conection
-mysqli_close($connect);
-
-foreach($allUsers as $user) {
-    echo '<h1>' . $user['username'] . '<h1>';
-   
-}
-*/
