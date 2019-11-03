@@ -27,7 +27,11 @@ class LoginView {
 
     public function getPassword() {
         return $this->hashPassword;
-    }
+	}
+	
+	public function getCookieName() {
+		return self::$cookieName;
+	}
 
     public function submitPost() : bool {
         if(isset($_POST[self::$submitLogin])) {
@@ -37,6 +41,7 @@ class LoginView {
         }
 	}
 	
+	// TODO string dependency
 	public function logoutPost() : bool {
 		if(isset($_POST[self::$logout]) && isset($_SESSION['userLoggedIn'])) {
 			$this->message = Messages::$bye;
@@ -46,15 +51,15 @@ class LoginView {
 		}
 	}
 
-	public function keepPost() : bool {
+	public function isKeepPost() : bool {
 		if(isset($_POST[self::$keep])) {
 			return true;
 		} else {
 			return false;
-		}
+        }
 	}
     
-    public function handleUsernamePost() : bool {
+  public function handleUsernamePost() : bool {
         $user = $_POST[self::$name];
 
         if(empty($user)) {

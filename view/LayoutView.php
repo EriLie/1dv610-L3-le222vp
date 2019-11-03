@@ -23,6 +23,7 @@ class LayoutView {
         
                     ' . $dtv->show() . '
                 </div>
+
                 
                 </body>
             </html>
@@ -30,7 +31,7 @@ class LayoutView {
     }
 
     public function userWantsToRegister() {
-        return isset($_GET['register']) ? true : false;
+        //return $this->state->checkIfUserWantsToRegister();
     }
 
     private function presentLink($isLoggedIn, $goToRegister) {

@@ -3,6 +3,7 @@
 namespace Controller;
 
 require_once('model/UserCredentialsModel.php');
+require_once('model/UserLoginModel.php');
 
 class LoginController {
     private $isLoggedIn = false;
@@ -25,37 +26,41 @@ class LoginController {
         $userSubmitted = $this->logInView->submitPost(); 
         $userLogOut = $this->logInView->logoutPost();
         
-        if($userSubmitted) {
-            $this->handleSubmit();
+        if ($userSubmitted) {
+            $this->handleLoginSubmit();
         } else if ($userLogOut) {
             $this->userCredentials->logoutSession();
         } 
     }
 
-    private function handleSubmit() {
-        
+    private function handleLoginSubmit() {      
 
-        if($this->logInView->handleUsernamePost()) {
-            if($this->logInView->handlePasswordPost()) {
-                $username = $this->logInView->getUsername();
-                $pwd = $this->logInView->getPassword();
+        if ($this->logInView->handleUsernamePost() && $this->logInView->handlePasswordPost()) {
+            
+            $newUser = new \Model\UserLoginModel($this->logInView->getUsername(),
+                                                 $this->logInView->getPassword(),
+                                                 $this->logInView->isKeepPost());
+            
+            /*
+            $username = $this->logInView->getUsername();
+            $pwd = $this->logInView->getPassword();
+            /* */
+            $nameIsSet = $this->userCredentials->userExist($newUser->getUsername());
+            $passwordIsSet = $this->userCredentials->passwordExist($newUser->getPassword());
+            /* */
+
+            // Kollar att användaren existerar innan vi loggar in?
+            if ($nameIsSet && $passwordIsSet) {
+                $userKeep = $this->logInView->iskeepPost();
+                $couldLogIn = $this->userCredentials->tryToLogIn($newUser->getUsername(), $newUser->getPassword());
                 
-                $nameIsSet = $this->userCredentials->userExist($username);
-                $passwordIsSet = $this->userCredentials->passwordExist($pwd);
-
-                if ($nameIsSet && $passwordIsSet) {
-                    $userKeep = $this->logInView->keepPost();
-                    $couldLogIn = $this->userCredentials->tryToLogIn($username, $pwd);
-                    
-                    if ($couldLogIn) {
-                        $this->logInView->shouldWelcome();
-                        $this->logInView->handleKeep();
-                    }
-                    
-                } else if ($nameIsSet || $passwordIsSet) {
-                    $this->logInView->handleNameOrPwd();
+                if ($couldLogIn) {
+                    $this->logInView->shouldWelcome();
+                    $this->logInView->handleKeep();
                 }
-
+                
+            } else if ($nameIsSet || $passwordIsSet) {
+                $this->logInView->handleNameOrPwd();
             }
         }
     }
@@ -69,7 +74,4 @@ class LoginController {
             return true;
         }
     }
-
-   
-
 }

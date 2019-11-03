@@ -1,6 +1,9 @@
 <?php
 
+// TODO Comments for how the database need and stuff
+
 namespace Model;
+
 use Settings;
 //require_once('../Settings.php');
 
@@ -21,7 +24,7 @@ class UserStorageModel {
         $this->settings = new \Settings();        
     }
 
-    public function authenticateUser($username, $password) : bool {
+    public function isAuthenticatedUser($username, $password) : bool {
         $authenticatedUser = false;
 
         $this->connectToDb();

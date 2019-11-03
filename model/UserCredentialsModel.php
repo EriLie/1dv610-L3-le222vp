@@ -6,14 +6,17 @@ namespace Model;
 //require_once('UsernameModel.php');
 //require_once('PasswordModel.php');
 require_once('UserStorageModel.php');
+require_once('StateModel.php');
 
 // TODO change to controller for USerStorage?
 
 class UserCredentialsModel {
     private $userStorage;
+    private $state;
 
     public function __construct() {
         $this->userStorage = new UserStorageModel();
+        $this->state = new StateModel();
     }
 
     public function userExist($username) : bool {
@@ -25,23 +28,20 @@ class UserCredentialsModel {
     }
 
     public function tryToLogIn($username, $password) : bool {
-        $userCanLogIn = $this->userStorage->authenticateUser($username, $password);
+        $userCanLogIn = $this->userStorage->isAuthenticatedUser($username, $password);
   
-        if($userCanLogIn) {
-            $_SESSION['userLoggedIn'] = true;
-            return true;
+        if ($userCanLogIn) {
+            $this->state->setStateLoggedIn();
+            //$_SESSION['userLoggedIn'] = true;
+            
+            return $this->state->checkIfLoggedIn();
         } else {
             return false;
         }
     }
 
     public function isLoggedInWithSession() : bool {
-
-        if(isset($_SESSION['userLoggedIn'])) {
-            return true;
-        } else {
-            return false;
-        }
+        return $this->state->checkIfLoggedIn();        
     }
 
     public function logoutSession() {

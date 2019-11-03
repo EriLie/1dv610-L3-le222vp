@@ -8,7 +8,7 @@ class RegisterModel {
     private $minCharPassword = 6;
 
     public function usernameOkLength($name) : bool {
-        if (strlen($name) > $this->minCharUsername) {
+        if (strlen($name) >= $this->minCharUsername) {
             return true;
         } else {
             return false;

@@ -91,7 +91,7 @@ class RegisterView {
 
     public function usernamePost() : bool {
         if(isset($_POST[self::$username])) {
-            $this->newUsername = $_POST[self::$username];
+            $this->newUsername = htmlspecialchars($_POST[self::$username]);
             return true;
         } else {
             return false;
