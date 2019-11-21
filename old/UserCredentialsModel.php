@@ -1,6 +1,8 @@
 <?php
 
-namespace Model;
+// SKA TA BORT DETTA
+
+namespace Model; 
 
 // TODO split this up ino username and password
 //require_once('UsernameModel.php');

@@ -2,13 +2,13 @@
 
 namespace Controller;
 
-require_once('model/UserCredentialsModel.php');
+require_once('model/Database.php');
 
 class RegisterController {
 
     private $registerView;
     private $registerModel;
-    private $userCredentials;
+    private $database;
 
     private $nameTaken = false;
     private $nameOK = false;
@@ -18,7 +18,7 @@ class RegisterController {
     public function __construct($registerView, $registerModel) {
         $this->registerView = $registerView;
         $this->registerModel = $registerModel;
-        $this->userCredentials = new \Model\UserCredentialsModel();
+        $this->database = new \Model\Database();
     }
 
     public function checkIfAnyPost() {
@@ -55,7 +55,7 @@ class RegisterController {
 
             if ($this->nameOK && $this->passwordOK) {
                 //add new user TODO
-                $this->userCredentials->addUser($this->registerView->getNewUsername(), $this->registerView->getPwd());
+                $this->database->saveUser($this->registerView->getNewUsername(), $this->registerView->getPwd());
                 // TODO sätta session för ny registrering i view $this->
             } else {
                 $this->registerView->createMessage($this->nameTaken);
@@ -67,7 +67,7 @@ class RegisterController {
     public function checkIfUsernameTaken($name) : bool {
         //$this->userCredentials->userExist($nameTaken) ? true : false;
         //$name = $this->registerView->getNewUsername();
-        $nameTaken = $this->userCredentials->userExist($name);
+        $nameTaken = $this->database->checkIfUserExist($name);
 
         if($nameTaken) {
             return true;

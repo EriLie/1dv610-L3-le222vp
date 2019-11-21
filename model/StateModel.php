@@ -10,8 +10,20 @@ class StateModel {
         $_SESSION['userLoggedIn'] = true;
     }
 
+    public function userExist() {
+        $_SESSION['userExist'] = true;
+    }
+
+    public function userDoesNotExist() {
+        $_SESSION['userExist'] = false;
+    }
+
     public function isLoggedIn() : bool { //old name checkIfLoggedIn
         return isset($_SESSION['userLoggedIn']);
+    }
+
+    public function logOut() {
+        unset($_SESSION['userLoggedIn']);
     }
 
     public function checkIfUserWantsToRegister() : bool {

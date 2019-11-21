@@ -16,9 +16,6 @@ class UserStorageModel {
     private $stmt;
     private $resultUser;
     private $resultPassword;
-
-
-
     
     public function __construct() {
         $this->settings = new \Settings();        

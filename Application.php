@@ -48,17 +48,31 @@ class Application {
     }
     
 	private function changeState() {
-        $this->isLoggedIn = $this->state->isLoggedIn();
-
-        if (!$this->isLoggedIn) {
-            $this->loginController->tryLogin();
+        //$this->isLoggedIn = $this->loginController->checkIfLoggedIn();
+        $this->loginController->tryLogin();
+        
+        if ($this->logInView->userClickedLogOut()) {
+            $this->loginController->logout();
         }
-
-        $this->goToRegister = $this->state->checkIfUserWantsToRegister();
         
         if ($this->goToRegister) {
             $tryToRegister = $this->registerController->checkIfAnyPost();
         }
+
+        $this->isLoggedIn = $this->state->isLoggedIn();
+        $this->goToRegister = $this->state->checkIfUserWantsToRegister();
+
+// Gå igenom härifrån, kommer dubbelt på nåt sätt, och sen felmeddelanden!!
+/*
+        if (!$this->isLoggedIn) {
+            
+        } else if ($this->logInView->userClickedLogOut()) {
+            $this->loginController->logout();
+        }
+ */
+        //renderar fel
+        
+        
         
 		//$this->newUserRegister = $this->layoutV->checkIfRegisterClicked(); //behöver hitta registrationpost
 		

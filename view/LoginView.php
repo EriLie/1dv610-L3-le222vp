@@ -42,8 +42,8 @@ class LoginView {
 	}
 	
 	// TODO string dependency
-	public function logoutPost() : bool {
-		if(isset($_POST[self::$logout]) && isset($_SESSION['userLoggedIn'])) {
+	public function userClickedLogOut() : bool {
+		if(isset($_POST[self::$logout]) /*&& isset($_SESSION['userLoggedIn'])*/) {
 			$this->message = Messages::$bye;
 			return true;
 		} else {

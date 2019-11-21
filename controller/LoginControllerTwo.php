@@ -11,7 +11,7 @@ require_once('model/CookieModel.php');
 class LoginControllerTwo {
     private $logInView;
     private $cookieModel;
-    private $stateModel;
+    private $state;
 
     private $database;
 
@@ -19,7 +19,7 @@ class LoginControllerTwo {
         $this->logInView = $logInView;
         $this->database = new \Model\Database();
         $this->cookieModel = new \Model\CookieModel();
-        $this->stateModel = new \Model\StateModel();
+        $this->state = new \Model\StateModel();
         /*
             X - Kolla session login -> "SessionModel" -> StateModel
 
@@ -34,10 +34,10 @@ class LoginControllerTwo {
 
     }
     
-    public function checkIfLoggedIn() {
+    public function checkIfLoggedIn() : bool{
         $loggedIn = false;
        
-        if ($this->stateModel->isLoggedIn()) 
+        if ($this->state->isLoggedIn()) 
         {
             $loggedIn = true;
         } 
@@ -51,29 +51,27 @@ class LoginControllerTwo {
             $loggedIn = true;            
         }
 
-        if ($this->logInView->submitPost()) {
-            $loggedIn = $this->tryLogin();
-        }
-
         return $loggedIn;
     }
 
     public function tryLogin() {
-        if ($this->logInView->submitPost()) {
-            $this->logInView->handleUsernamePost();
-            $this->logInView->handlePasswordPost();
-            $this->logInView->handleKeep();
-            //$userLoginModel = new \Model\UserLoginModel(
-              //  $this->logInView->getUsername(), 
-                //$this->logInView->getPassword(), 
-                //$this->logInView->isKeepPost()
-           // );
+        if ($this->logInView->submitPost()) {  
             
-            $this->database->isAuthenticatedUser(
-                $this->logInView->getUsername(), 
-                $this->logInView->getPassword(), 
-                $this->logInView->isKeepPost()
-            );
+            if ($this->logInView->handleUsernamePost()) {
+                if ($this->logInView->handlePasswordPost()) {
+                    $this->logInView->handleKeep();
+
+                    $this->database->isAuthenticatedUser(
+                        $this->logInView->getUsername(), 
+                        $this->logInView->getPassword(), 
+                        $this->logInView->isKeepPost()
+                    );
+                        
+                    $this->logInView->handleNameOrPwd();
+                }
+            }
+            
+            
            
                 
                 // TODO Do login stuff
@@ -93,7 +91,7 @@ class LoginControllerTwo {
     }
     
     public function logout() {
-        return false;
+        $this->state->logOut();
     }
 
     public function getBoolIsLoggedIn() {
