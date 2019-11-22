@@ -13,5 +13,6 @@ class Messages {
     public static $welcome = 'Welcome';
     public static $welcomeCookie = 'Welcome back with cookie';
     public static $empty = "";
+    public static $pwdNoMatch = "Passwords do not match. ";
     
 }

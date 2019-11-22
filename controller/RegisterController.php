@@ -48,6 +48,8 @@ class RegisterController {
 
                         if ($newpassword == $repeatPassword) {
                             $this->passwordOK = true;
+                        } else {
+                            $this->registerView->pwdDontMatch();
                         }
                     }
                 }

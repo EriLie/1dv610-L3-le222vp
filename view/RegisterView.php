@@ -60,11 +60,11 @@ class RegisterView {
         ';
     }
 
-
+    public function pwdDontMatch() {
+        $this->message .= Messages::$pwdNoMatch;
+	}
 
     public function createMessage($nameTaken) {
-        $this->message = '';
-
         if(isset($_POST[self::$addRegistration])) {
             if(strlen($_POST[self::$username]) < $this->minCharUsername) {
 
