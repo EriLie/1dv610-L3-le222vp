@@ -4,7 +4,7 @@ namespace View;
 
 class LayoutView {
 
-    public function render($isLoggedIn, LoginView $v, DateTimeView $dtv, RegisterView $regV, $goToRegister) {
+    public function render($isLoggedIn, LoginView $v, DateTimeView $dtv, RegisterView $regV, $goToRegister, NoteView $noteView) {
         echo '<!DOCTYPE html>
             <html>
                 <head>
@@ -20,14 +20,24 @@ class LayoutView {
                 
                 <div class="container">
                     ' . $this->rightResponse($isLoggedIn, $goToRegister, $v, $regV) . '
-        
+
                     ' . $dtv->show() . '
                 </div>
 
+                <div class="notes">
+                    ' . $this->notes($isLoggedIn, $noteView) . '
+                </div>
                 
                 </body>
             </html>
         ';
+    }
+
+    private function notes($isLoggedIn, $noteView) {
+        if ($isLoggedIn) {
+            return $noteView->newNoteForm();
+        }
+        
     }
 
     public function userWantsToRegister() {

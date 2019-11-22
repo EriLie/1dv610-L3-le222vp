@@ -92,7 +92,20 @@ class RegisterView {
     }
 
     public function usernamePost() : bool {
+         
+
         if(isset($_POST[self::$username])) {
+    /*         TODO specialtecken
+            $inputName = $_POST[self::$username];
+        echo $inputName;
+        echo " mellan ";
+            $allowedLetters = preg_replace("/[^a-zA-Z0-9\s]/", "", $inputName);
+        echo $allowedLetters;
+
+
+            $this->newUsername = $allowedLetters; 
+
+    */        
             $this->newUsername = htmlspecialchars($_POST[self::$username]);
 
             return true;
