@@ -49,15 +49,12 @@ class Database {
     }
 
     public function saveUser($name, $pwd) {        
-        $stmt = $this->mysqli->prepare("INSERT INTO user (username, hashpassword) VALUES (?,?);");
-        $stmt->bind_param('ss', $username, $password);
+        $stmt = $this->mysqli->prepare("INSERT INTO user (username, hashpassword) VALUES (?, ?);");
+        $stmt->bind_param('ss', $name, $pwd);
         $stmt->execute();
-    
-
-        
     }
 
-    private function checkIfUserExist($username) : bool {
+    public function checkIfUserExist($username) : bool { 
         $stmt = $this->mysqli->prepare("SELECT * FROM user WHERE username=?;");
         $stmt->bind_param('s', $username);
         $stmt->execute();

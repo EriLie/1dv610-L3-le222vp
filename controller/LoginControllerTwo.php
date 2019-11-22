@@ -55,39 +55,43 @@ class LoginControllerTwo {
     }
 
     public function tryLogin() {
-        if ($this->logInView->submitPost()) {  
-            
-            if ($this->logInView->handleUsernamePost()) {
-                if ($this->logInView->handlePasswordPost()) {
-                    $this->logInView->handleKeep();
+     
+        if ($this->logInView->handleUsernamePost()) {
+            if ($this->logInView->handlePasswordPost()) {
+                $this->logInView->handleKeep();
 
-                    $this->database->isAuthenticatedUser(
-                        $this->logInView->getUsername(), 
-                        $this->logInView->getPassword(), 
-                        $this->logInView->isKeepPost()
-                    );
-                        
+                $successfullLogin = $this->database->isAuthenticatedUser(
+                    $this->logInView->getUsername(), 
+                    $this->logInView->getPassword(), 
+                    $this->logInView->isKeepPost()
+                );
+                
+                if ($successfullLogin) {
+                    $this->logInView->shouldWelcome();
+                    $this->state->setHavePrintedWelcome();
+                } else {
                     $this->logInView->handleNameOrPwd();
-                }
+                }                    
             }
+        }
+        
+        
+        
             
+            // TODO Do login stuff
+
+            //hända nör det loggat in sätta isloggedIn
             
-           
-                
-                // TODO Do login stuff
+            // Set Session "state"
+            // Set view to say "welcome ..."
 
-                //hända nör det loggat in sätta isloggedIn
+            // if ($userLoginModel->isKeepLoggedIn()) {
+                // Set cookie
+                // set view to say "welcome by cookie"
                 
-                // Set Session "state"
-                // Set view to say "welcome ..."
-
-               // if ($userLoginModel->isKeepLoggedIn()) {
-                    // Set cookie
-                    // set view to say "welcome by cookie"
-                    
-               // }
-           
-        } 
+            // }
+        
+    
     }
     
     public function logout() {

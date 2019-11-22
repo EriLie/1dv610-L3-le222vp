@@ -21,13 +21,13 @@ class RegisterController {
         $this->database = new \Model\Database();
     }
 
-    public function checkIfAnyPost() {
-        //$addRegPost = $this->registerView->addRegPost();
-       
+    public function checkRegistrationPost() {
+          
         if ($this->registerView->addRegPost()) {
-
+           
             if ($this->registerView->usernamePost()) {
                 $name = $this->registerView->getNewUsername();
+                
                 if ($this->checkIfUsernameTaken($name)) {
                     $this->nameTaken = true;
                 } else {
@@ -54,12 +54,14 @@ class RegisterController {
             }
 
             if ($this->nameOK && $this->passwordOK) {
+                
                 //add new user TODO
                 $this->database->saveUser($this->registerView->getNewUsername(), $this->registerView->getPwd());
                 // TODO sätta session för ny registrering i view $this->
             } else {
+               
                 $this->registerView->createMessage($this->nameTaken);
-            }  
+            }
         }
         
     }
@@ -68,6 +70,8 @@ class RegisterController {
         //$this->userCredentials->userExist($nameTaken) ? true : false;
         //$name = $this->registerView->getNewUsername();
         $nameTaken = $this->database->checkIfUserExist($name);
+
+        echo $nameTaken;
 
         if($nameTaken) {
             return true;

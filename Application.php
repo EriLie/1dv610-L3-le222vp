@@ -43,24 +43,43 @@ class Application {
     }
     
 	public function run() {        
-		$this->changeState();
-		$this->generateOutput();
+		$this->changeState(); 
+		$this->generateOutput(); 
     }
     
 	private function changeState() {
-        //$this->isLoggedIn = $this->loginController->checkIfLoggedIn();
-        $this->loginController->tryLogin();
-        
-        if ($this->logInView->userClickedLogOut()) {
+
+        if (!$this->state->isLoggedIn()) {
+            // Kolla inloggning med cookies
+            $tryToRegister = $this->registerController->checkRegistrationPost();
+            $this->goToRegister = $this->state->checkIfUserWantsToRegister(); 
+
+            if ($this->logInView->submitPost()) {
+                $this->loginController->tryLogin();
+            } 
+        } else if ($this->logInView->userClickedLogOut()) {
+            // Annars kanske användaren ville logga ut?
             $this->loginController->logout();
-        }
+        } 
         
-        if ($this->goToRegister) {
-            $tryToRegister = $this->registerController->checkIfAnyPost();
+
+        // Here we begin running application 
+        // example notes?
+
+        
+/* 
+        if ($this->state->havePrintedWelcome()) {
+            $this->logInView->emptyMessage();
         }
+*/        
+        
+        
+
+        
 
         $this->isLoggedIn = $this->state->isLoggedIn();
-        $this->goToRegister = $this->state->checkIfUserWantsToRegister();
+        
+
 
 // Gå igenom härifrån, kommer dubbelt på nåt sätt, och sen felmeddelanden!!
 /*
@@ -97,7 +116,7 @@ class Application {
             // go to log in view
         }
         
-        
+        //$this->logInView->emptyMessage();
 	 
 		//$pageView = new \View\HTMLPageView($title, $body);
 		//$pageView->echoHTML();

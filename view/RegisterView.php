@@ -86,7 +86,9 @@ class RegisterView {
     }
 
     public function addRegPost() : bool {
+
         return isset($_POST[self::$addRegistration]) ? true : false;
+        //return isset($_POST[self::$addRegistration]);
     }
 
     public function usernamePost() : bool {

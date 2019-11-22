@@ -33,12 +33,12 @@ class LoginView {
 		return self::$cookieName;
 	}
 
-    public function submitPost() : bool {
-        if(isset($_POST[self::$submitLogin])) {
-            return true;
-        } else {
-            return false;
-        }
+	public function submitPost() : bool {
+		if(isset($_POST[self::$submitLogin])) {
+				return true;
+		} else {
+				return false;
+		}
 	}
 	
 	// TODO string dependency
@@ -96,6 +96,10 @@ class LoginView {
 		$this->message = Messages::$welcome;
 	}
 
+	public function emptyMessage() {
+		$this->message = "";
+	}
+
     public function controlIfLoggedInWithCookie() : bool {
 	    if (isset($_COOKIE[$this->inputPostName])) {
 			$this->message = Messages::$welcomeCookie;
@@ -114,9 +118,11 @@ class LoginView {
 	 */
 	public function response($isLoggedIn) {
 		$response;
+
+
 	
 		if ($isLoggedIn) {
-
+			$this->emptyMessage();
 			$response = $this->generateLogoutButtonHTML($this->message);			
 		} else {
 			$response = $this->generateLoginFormHTML($this->message);
