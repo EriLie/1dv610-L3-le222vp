@@ -61,39 +61,11 @@ class Application {
             // Annars kanske användaren ville logga ut?
             $this->loginController->logout();
         } 
-        
-
+        // else if...
         // Here we begin running application 
         // example notes?
 
-        
-/* 
-        if ($this->state->havePrintedWelcome()) {
-            $this->logInView->emptyMessage();
-        }
-*/        
-        
-        
-
-        
-
         $this->isLoggedIn = $this->state->isLoggedIn();
-        
-
-
-// Gå igenom härifrån, kommer dubbelt på nåt sätt, och sen felmeddelanden!!
-/*
-        if (!$this->isLoggedIn) {
-            
-        } else if ($this->logInView->userClickedLogOut()) {
-            $this->loginController->logout();
-        }
- */
-        //renderar fel
-        
-        
-        
-		//$this->newUserRegister = $this->layoutV->checkIfRegisterClicked(); //behöver hitta registrationpost
 		
     }
     

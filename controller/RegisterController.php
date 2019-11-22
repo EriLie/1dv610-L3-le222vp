@@ -27,7 +27,7 @@ class RegisterController {
            
             if ($this->registerView->usernamePost()) {
                 $name = $this->registerView->getNewUsername();
-                
+
                 if ($this->checkIfUsernameTaken($name)) {
                     $this->nameTaken = true;
                 } else {
@@ -67,11 +67,7 @@ class RegisterController {
     }
 
     public function checkIfUsernameTaken($name) : bool {
-        //$this->userCredentials->userExist($nameTaken) ? true : false;
-        //$name = $this->registerView->getNewUsername();
         $nameTaken = $this->database->checkIfUserExist($name);
-
-        echo $nameTaken;
 
         if($nameTaken) {
             return true;

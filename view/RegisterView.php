@@ -39,7 +39,7 @@ class RegisterView {
                     <p id="' . self::$newMessage . '">' . $this->message . '</p>                
                     
                     <label for="' . self::$username . '" >Username :</label>
-                    <input type="text" size="20" name="'. self::$username .'" id="'. self::$username .'" value="" />
+                    <input type="text" size="20" name="'. self::$username .'" id="'. self::$username .'" value="'. $this->newUsername .'" />
                     
                     <br>
                     
@@ -94,6 +94,7 @@ class RegisterView {
     public function usernamePost() : bool {
         if(isset($_POST[self::$username])) {
             $this->newUsername = htmlspecialchars($_POST[self::$username]);
+
             return true;
         } else {
             return false;

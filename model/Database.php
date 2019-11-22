@@ -59,6 +59,8 @@ class Database {
         $stmt->bind_param('s', $username);
         $stmt->execute();
 
+        $stmt->store_result();
+
         if ($stmt->num_rows() >= 1) {
             $this->stateModel->userExist();
             return true;
