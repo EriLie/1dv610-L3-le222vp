@@ -4,18 +4,31 @@ namespace View;
 
 class ThoughtView {
 
-    public function renderThoughtView() {
+    public function renderPublicThoughtView() {
         return '
             <div>
-                
+                <p>alla inlägg  </p>
             </div>
 
             <div>
+                <p>Och fler</p>
             </div>
         
         ';
     }
 
+    public function printOneThought() {
+        return '
+            <div id="">
+
+            </div>
+
+            <div>
+
+            </div>
+        
+        ';
+    }
 
     public function newThoughtForm() {
         return '

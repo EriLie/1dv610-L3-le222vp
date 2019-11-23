@@ -2,7 +2,7 @@
 
 require_once('controller/RegisterController.php');
 //require_once('controller/LoginController.php');
-require_once('controller/LoginControllerTwo.php');
+require_once('controller/LoginController.php');
 
 require_once('view/LayoutView.php');
 require_once('view/LoginView.php');
@@ -40,7 +40,7 @@ class Application {
 
         $this->registerController = new \Controller\RegisterController($this->registerView, $this->registerModel);
         //$this->loginController = new \Controller\LoginController($this->logInView);
-        $this->loginController = new \Controller\LoginControllerTwo($this->logInView);
+        $this->loginController = new \Controller\LoginController($this->logInView);
 
         //$this->isLoggedIn = $this->loginController->getBoolIsLoggedIn();        
     }

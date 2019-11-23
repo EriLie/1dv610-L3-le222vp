@@ -4,11 +4,11 @@ namespace Controller;
 
 // require_once('model/UserCredentialsModel.php');
 require_once('model/Database.php');
-require_once('model/UserLoginModel.php');
+//require_once('model/UserLoginModel.php');
 require_once('model/StateModel.php');
 require_once('model/CookieModel.php');
 
-class LoginControllerTwo {
+class LoginController {
     private $logInView;
     private $cookieModel;
     private $state;

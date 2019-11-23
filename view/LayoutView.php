@@ -25,7 +25,7 @@ class LayoutView {
                 </div>
 
                 <div class="notes">
-                    ' . $this->showNotes($isLoggedIn, $thoughtView) . '
+                    ' . $this->showNotes($isLoggedIn, $thoughtView, $goToRegister) . '
                 </div>
                 
                 </body>
@@ -33,9 +33,11 @@ class LayoutView {
         ';
     }
 
-    private function showNotes($isLoggedIn, $thoughtView) {
+    private function showNotes($isLoggedIn, $thoughtView, $goToRegister) {
         if ($isLoggedIn) {
             return $thoughtView->newThoughtForm();
+        } else if (!$isLoggedIn && !$goToRegister) {
+            return $thoughtView->renderPublicThoughtView();
         }
         
     }
