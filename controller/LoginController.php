@@ -68,6 +68,7 @@ class LoginController {
                 
                 if ($successfullLogin) {
                     $this->logInView->shouldWelcome();
+                    $this->state->loggedInUsername($this->logInView->getUsername());
                     $this->state->setHavePrintedWelcome();
                 } else {
                     $this->logInView->handleNameOrPwd();

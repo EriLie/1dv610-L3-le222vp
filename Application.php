@@ -1,7 +1,6 @@
 <?php
 
 require_once('controller/RegisterController.php');
-//require_once('controller/LoginController.php');
 require_once('controller/LoginController.php');
 
 require_once('view/LayoutView.php');
@@ -39,10 +38,7 @@ class Application {
         $this->state = new \Model\StateModel();
 
         $this->registerController = new \Controller\RegisterController($this->registerView, $this->registerModel);
-        //$this->loginController = new \Controller\LoginController($this->logInView);
-        $this->loginController = new \Controller\LoginController($this->logInView);
-
-        //$this->isLoggedIn = $this->loginController->getBoolIsLoggedIn();        
+        $this->loginController = new \Controller\LoginController($this->logInView);       
     }
     
 	public function run() {        
@@ -55,7 +51,7 @@ class Application {
         if (!$this->state->isLoggedIn()) {
             // Kolla inloggning med cookies
             $tryToRegister = $this->registerController->checkRegistrationPost();
-            $this->goToRegister = $this->state->checkIfUserWantsToRegister(); 
+             
 
             if ($this->logInView->submitPost()) {
                 $this->loginController->tryLogin();
@@ -65,7 +61,7 @@ class Application {
         }
 
         $this->isLoggedIn = $this->state->isLoggedIn();
-		
+		$this->goToRegister = $this->state->checkIfUserWantsToRegister();
     }
     
 	private function generateOutput() {

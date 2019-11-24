@@ -10,19 +10,25 @@ class StateModel {
         $_SESSION['userLoggedIn'] = true;
     }
 
-    public function userExist() {
+    public function setUserExistTrue() {
         $_SESSION['userExist'] = true;
     }
-
    
-    public function userDoesNotExist() {
+    public function setUserExistFalse() {
         $_SESSION['userExist'] = false;
     }
 
-    public function isLoggedIn() : bool { //old name checkIfLoggedIn
+    public function userExist() : bool {
+        return isset($_SESSION['userExist']);
+    }
+
+    public function isLoggedIn() : bool {
         return isset($_SESSION['userLoggedIn']);
     }
 
+    public function loggedInUsername($username) {
+        $_SESSION['loggedInUsername'] = $username;
+    }
 
     public function setHavePrintedWelcome() {
         $_SESSION['shouldNotPrintWelcome'] = true;
@@ -34,9 +40,10 @@ class StateModel {
 
     public function logOut() {
         unset($_SESSION['userLoggedIn']);
+        unset($_SESSION['loggedInUsername']);
     }
 
-    public function checkIfUserWantsToRegister() : bool {
+    public function checkIfUserWantsToRegister() : bool { //TOGO WHY GET???
         return isset($_GET['register']);
     }
 }

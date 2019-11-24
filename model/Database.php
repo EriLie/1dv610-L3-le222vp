@@ -9,12 +9,12 @@ class Database {
 
     private $mysqli;
     private $settings; 
-    private $stateModel;
+    private $state;
 
 
     public function __construct() {
         $this->settings = new \Settings(); 
-        $this->stateModel = new \Model\StateModel();
+        $this->state = new \Model\StateModel();
 
         $this->mysqli = new \mysqli( 
             $this->settings->host, 
@@ -39,7 +39,7 @@ class Database {
         
         if ($stmt->num_rows() >= 1) {
             
-            $this->stateModel->setStateLoggedIn();
+            $this->state->setStateLoggedIn();
             //$stmt->close();
             return true;
         } else {
@@ -62,10 +62,10 @@ class Database {
         $stmt->store_result();
 
         if ($stmt->num_rows() >= 1) {
-            $this->stateModel->userExist();
+            $this->state->setUserExistTrue();
             return true;
         } else {
-            $this->stateModel->userDoesNotExist();
+            $this->state->setUserExistFalse();
             return false;
         }       
     }

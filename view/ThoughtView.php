@@ -7,7 +7,7 @@ class ThoughtView {
     public function renderPublicThoughtView() {
         return '
             <div>
-                <p>alla inlägg  </p>
+                <p>alla  publika inlägg  </p>
             </div>
 
             <div>
