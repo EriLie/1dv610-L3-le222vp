@@ -1,7 +1,7 @@
 <?php
 
 namespace Model;
-// TODO not hardcoded
+// TODO not hardcoded, should be static variables
 // Basically sessionModel, handles session
 class StateModel {
 
@@ -10,12 +10,8 @@ class StateModel {
         $_SESSION['userLoggedIn'] = true;
     }
 
-    public function setUserExistTrue() {
-        $_SESSION['userExist'] = true;
-    }
-   
-    public function setUserExistFalse() {
-        $_SESSION['userExist'] = false;
+    public function setUserExist($bool) {
+        $_SESSION['userExist'] = $bool;
     }
 
     public function userExist() : bool {

@@ -5,6 +5,7 @@ namespace Model;
 use Settings;
 use StateModel;
 
+// TODO shoud have a class for connect and different classes for the different tables
 class Database {
 
     private $mysqli;
@@ -24,7 +25,7 @@ class Database {
         );
 
         if ($this->mysqli->connect_errno) {
-            // Failure?
+            // Failure? Exception
             //echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
         }
     }
@@ -62,10 +63,10 @@ class Database {
         $stmt->store_result();
 
         if ($stmt->num_rows() >= 1) {
-            $this->state->setUserExistTrue();
+            $this->state->setUserExist(true);
             return true;
         } else {
-            $this->state->setUserExistFalse();
+            $this->state->setUserExist(false);
             return false;
         }       
     }

@@ -3,6 +3,10 @@
 namespace View;
 
 class ThoughtView {
+    private static $noteTitle = 'ThoughtView::NoteTitle';
+    private static $noteContext = 'ThoughtView::NoteContext';
+    private static $notePublic = 'ThoughtView::NotePublic';
+    private static $submitNewNote = 'ThoughtView::submitNewNote';
 
     public function renderPublicThoughtView() {
         return '
@@ -19,7 +23,7 @@ class ThoughtView {
 
     public function printOneThought() {
         return '
-            <div id="">
+            <div>
 
             </div>
 
@@ -36,19 +40,19 @@ class ThoughtView {
             <form method="post" id="addNote">
                 <fieldset>
                     <p>Title:  </p>
-                    <input type="text" size="20" name="titleNote" id="" value="" />
+                    <input type="text" size="20" name="' . self::$noteTitle . '" id="' . self::$noteTitle . '" value="" />
                     <br>
 
                     <p>Thoughts of the day:  </p>
-                    <textarea name="contextThought" cols="40" rows="10" id="" value="" ></textarea>
+                    <textarea name="' . self::$noteContext . '" cols="40" rows="10" id="' . self::$noteContext . '" value="" ></textarea>
                     <br>
 
                     <p>Make it public:  </p>                    
-                    <input type="checkbox" name="showNoteInPublic" id="" value="makePublic" />
+                    <input type="checkbox" name="' . self::$notePublic . '" id="' . self::$notePublic . '" value="makePublic" />
 
                     <br>
                     <br>
-                    <input id="submit" type="submit" name="saveNote"  value="Save" />
+                    <input id="' . self::$submitNewNote . '" type="submit" name="' . self::$submitNewNote . '"  value="Save" />
                     <br>
                 </fieldset>
             </form> 
