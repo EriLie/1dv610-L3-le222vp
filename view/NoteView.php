@@ -2,13 +2,19 @@
 
 namespace View;
 
-class ThoughtView {
-    private static $noteTitle = 'ThoughtView::NoteTitle';
-    private static $noteContext = 'ThoughtView::NoteContext';
-    private static $notePublic = 'ThoughtView::NotePublic';
-    private static $submitNewNote = 'ThoughtView::submitNewNote';
+require_once('model/Database.php');
 
-    public function renderPublicThoughtView() {
+
+class NoteView {
+
+
+
+    private static $noteTitle = 'NoteView::NoteTitle';
+    private static $noteContext = 'NoteView::NoteContext';
+    private static $notePublic = 'NoteView::NotePublic';
+    private static $submitNewNote = 'NoteView::submitNewNote';
+
+    public function renderPublicNoteView() {
         return '
             <div>
                 <p>alla  publika inlägg  </p>
@@ -21,20 +27,12 @@ class ThoughtView {
         ';
     }
 
-    public function printOneThought() {
-        return '
-            <div>
-
-            </div>
-
-            <div>
-
-            </div>
-        
-        ';
+    
+    public function renderWhenLoggedIn() {
+        return $this->addNewNoteForm() . $this->printLoggedInUserNotes();
     }
 
-    public function newThoughtForm() {
+    public function addNewNoteForm() {
         return '
             <h2>Add a thought:</h2>
             <form method="post" id="addNote">
@@ -58,4 +56,31 @@ class ThoughtView {
             </form> 
         ';
     }
+
+    public function printLoggedInUserNotes() {
+        // TODO Not a good solution but it works... View - readonly - Model
+        $database = new \Model\Database();
+        return $database->getNotesFromLoggedInUser();
+        
+        //
+        
+        /* 
+        '
+            <br>
+
+        
+        ';*/
+    }
+
+    public function printOneNote() {
+        return '
+            <div>
+
+                <div>
+
+                </div>
+            </div>        
+        ';
+    }
+
 }

@@ -7,7 +7,7 @@ require_once('view/LayoutView.php');
 require_once('view/LoginView.php');
 require_once('view/DateTimeView.php');
 require_once('view/RegisterView.php');
-require_once('view/ThoughtView.php');
+require_once('view/NoteView.php');
 
 require_once('model/RegisterModel.php');
 require_once('model/StateModel.php');
@@ -19,7 +19,7 @@ class Application {
     private $dateView;
     private $layoutView;
     private $registerView;
-    private $thoughtView;
+    private $noteView;
     private $registerModel;
     private $registerController;
     private $state;
@@ -32,7 +32,7 @@ class Application {
         $this->layoutView = new \View\LayoutView();
         $this->registerView = new \View\RegisterView();
         $this->logInView = new \View\LoginView();
-        $this->thoughtView = new \View\ThoughtView();
+        $this->noteView = new \View\NoteView();
 
         $this->registerModel = new \Model\RegisterModel();
         $this->state = new \Model\StateModel();
@@ -41,9 +41,14 @@ class Application {
         $this->loginController = new \Controller\LoginController($this->logInView);       
     }
     
-	public function run() {        
-		$this->changeState(); 
-		$this->generateOutput(); 
+	public function run() {
+        try {
+            $this->changeState();
+		    $this->generateOutput();
+        }
+        catch (\Exception $e) {
+            echo $e->getMessage();
+        }		
     }
     
 	private function changeState() {
@@ -56,26 +61,37 @@ class Application {
             if ($this->logInView->submitPost()) {
                 $this->loginController->tryLogin();
             } 
+
+            if ($this->logInView->controlIfLoggedInWithCookie()) {
+                $this->state->setStateLoggedIn();
+            }
+
         } else if ($this->logInView->userClickedLogOut()) {
             $this->loginController->logout();
         }
 
         $this->isLoggedIn = $this->state->isLoggedIn();
-		$this->goToRegister = $this->state->checkIfUserWantsToRegister();
+		$this->goToRegister = $this->logInView->checkIfUserWantsToRegister();
     }
     
 	private function generateOutput() {
         //skapa layout här coh skicka in data i konstructorn??
+
+        if ($this->isLoggedIn) {
+
+        }
+
         $this->layoutView->render(
                 $this->isLoggedIn,
                 $this->logInView, 
                 $this->dateView, 
                 $this->registerView, 
                 $this->goToRegister,
-                $this->thoughtView
+                $this->noteView
         );
 
-        
+        // TODO Instead of one render with TO MANY arguments...
+        /* 
         if ($this->isLoggedIn) {
             // Gå till loggedIn view
         } else if ($this->goToRegister) {
@@ -83,10 +99,6 @@ class Application {
         } else {
             // go to log in view
         }
-        
-        //$this->logInView->emptyMessage();
-	 
-		//$pageView = new \View\HTMLPageView($title, $body);
-		//$pageView->echoHTML();
+        */
 	}
 }

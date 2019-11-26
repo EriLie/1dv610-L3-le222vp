@@ -10,7 +10,7 @@ class RegisterView {
 	private static $addRegistration = 'RegisterView::Register';
 
     private $message = '';
-    private $minCharUsername = 3; // TODO not hardcoded!
+    private $minCharUsername = 3; // TODO not hardcoded in view!
     private $minCharpassword = 6;
     
     private $newUsername;

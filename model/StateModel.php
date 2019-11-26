@@ -2,12 +2,17 @@
 
 namespace Model;
 // TODO not hardcoded, should be static variables
+
 // Basically sessionModel, handles session
 class StateModel {
 
     
     public function setStateLoggedIn() {
         $_SESSION['userLoggedIn'] = true;
+    }
+
+    public function isLoggedIn() : bool {
+        return isset($_SESSION['userLoggedIn']);
     }
 
     public function setUserExist($bool) {
@@ -18,12 +23,12 @@ class StateModel {
         return isset($_SESSION['userExist']);
     }
 
-    public function isLoggedIn() : bool {
-        return isset($_SESSION['userLoggedIn']);
-    }
-
     public function loggedInUsername($username) {
         $_SESSION['loggedInUsername'] = $username;
+    }
+
+    public function getLoggedInUsername() : string {
+       return $_SESSION['loggedInUsername'];
     }
 
     public function setHavePrintedWelcome() {
@@ -39,7 +44,4 @@ class StateModel {
         unset($_SESSION['loggedInUsername']);
     }
 
-    public function checkIfUserWantsToRegister() : bool { //TOGO WHY GET???
-        return isset($_GET['register']);
-    }
 }

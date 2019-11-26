@@ -34,7 +34,7 @@ class LoginController {
 
     }
     
-    public function checkIfLoggedIn() : bool{
+    public function checkIfLoggedIn() : bool { // ANVÄNDS KANSKE INTE?? Kolla upp!
         $loggedIn = false;
        
         if ($this->state->isLoggedIn()) 
@@ -58,7 +58,7 @@ class LoginController {
      
         if ($this->logInView->handleUsernamePost()) {
             if ($this->logInView->handlePasswordPost()) {
-                $this->logInView->handleKeep();
+                //$this->logInView->handleKeep(); // TODO WHAT?
 
                 $successfullLogin = $this->database->isAuthenticatedUser(
                     $this->logInView->getUsername(), 
@@ -70,6 +70,12 @@ class LoginController {
                     $this->logInView->shouldWelcome();
                     $this->state->loggedInUsername($this->logInView->getUsername());
                     $this->state->setHavePrintedWelcome();
+                   
+                    if ($this->logInView->isKeepPost()) {
+                        $this->logInView->setCookie();
+                    }
+                    
+                   
                 } else {
                     $this->logInView->handleNameOrPwd();
                 }                    

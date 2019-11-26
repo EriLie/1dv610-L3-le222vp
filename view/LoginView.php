@@ -3,6 +3,9 @@
 namespace View;
 
 require_once('Messages.php');
+require_once('model/StateModel.php'); // ? 
+
+// TODO string dependency, make static variables!
 
 class LoginView {
     private static $submitLogin = 'LoginView::Login';
@@ -34,16 +37,17 @@ class LoginView {
 	}
 
 	public function submitPost() : bool {
-		if(isset($_POST[self::$submitLogin])) {
-				return true;
-		} else {
-				return false;
-		}
+		return isset($_POST[self::$submitLogin]);
 	}
+
 	
-	// TODO string dependency
+    public function checkIfUserWantsToRegister() : bool { //TOGO WHY GET???
+        return isset($_GET['register']);
+    }
+	
+	
 	public function userClickedLogOut() : bool {
-		if(isset($_POST[self::$logout]) /*&& isset($_SESSION['userLoggedIn'])*/) {
+		if(isset($_POST[self::$logout])) {
 			$this->message = Messages::$bye;
 			return true;
 		} else {
@@ -52,11 +56,7 @@ class LoginView {
 	}
 
 	public function isKeepPost() : bool {
-		if(isset($_POST[self::$keep])) {
-			return true;
-		} else {
-			return false;
-        }
+		return isset($_POST[self::$keep]);
 	}
     
   public function handleUsernamePost() : bool {
@@ -71,9 +71,9 @@ class LoginView {
         }
 	}
 	
-	public function handleKeep() {
-		$cookieName = $this->inputPostName;
-		setcookie($cookieName, time() + 3600);
+	public function setCookie() {
+		$cookieValue = $this->inputPostName;
+		setcookie(self::$cookieName, $cookieValue, time() + 3600);
 	}
 
     public function handlePasswordPost() : bool {
@@ -101,7 +101,8 @@ class LoginView {
 	}
 
     public function controlIfLoggedInWithCookie() : bool {
-	    if (isset($_COOKIE[$this->inputPostName])) {
+	    if (isset($_COOKIE[self::$cookieName])) {
+			// if jämföra namn
 			$this->message = Messages::$welcomeCookie;
 			return true;
 		} else {
