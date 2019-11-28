@@ -13,6 +13,7 @@ class NoteView {
     private static $noteContext = 'NoteView::NoteContext';
     private static $notePublic = 'NoteView::NotePublic';
     private static $submitNewNote = 'NoteView::submitNewNote';
+    private static $deleteNote = 'NoteView::DeleteNote';
 
     public function renderPublicNoteView() {
         return '
@@ -32,7 +33,7 @@ class NoteView {
         return "<div>" . $this->addNewNoteForm() . $this->printLoggedInUserNotes() . "</div>";
     }
 
-    public function addNewNoteForm() {
+    private function addNewNoteForm() {
         return '
             <h2>Add a thought:</h2>
             <form method="post" id="addNote">
@@ -57,27 +58,40 @@ class NoteView {
         ';
     }
 
-    public function printLoggedInUserNotes() {
+    private function printLoggedInUserNotes() {
         // TODO Not a good solution but it works... View - readonly - Model
         $database = new \Model\Database();
         $oneUsersNotes = $database->getNotesFromLoggedInUser();
         $notesInHTML = '';
 
         foreach ($oneUsersNotes as $oneNote) {
-            
+            $htmlNote = "<br><fieldset>" . $this->printOneNote($oneNote) . $this->addDeleteButtonToOneNote($oneNote->getId()) . "</fieldset>";
+            $notesInHTML .= $htmlNote;
         }
 
-        return $notesInHTML;
+        return '<div class="allNotesOnPage">' . $notesInHTML . '</div>';
     }
 
-    public function printOneNote() {
+    private function printOneNote($oneNote) {
         return '
             <div>
-
-                <div>
-
-                </div>
+                <h4>' . $oneNote->getTitle()  . ', ' . $this->publicOrNot($oneNote->getPublic()) . '</h4>
+                <h6>Created: ' . $oneNote->getCreated()  . ' by ' . $oneNote->getAuthor()  . '</h6>
+                <p>' . $oneNote->getContent() . '</p>
             </div>        
+        ';
+    }
+
+    private function publicOrNot($public) : string {
+        return $public ? "(Public)" : "(Not Public)";
+    }
+
+    private function addDeleteButtonToOneNote($id) : string {
+        return '
+            <form method="post">
+                <input type="hidden" name="noteId" value="' . $id . '">
+                <input type="submit" name="' . self::$deleteNote . '" value="Delete" />
+            </form>
         ';
     }
 

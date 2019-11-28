@@ -153,7 +153,7 @@ class LoginView {
 	*/
 	private function generateLoginFormHTML($message) {
 		return '
-			<form method="post" > 
+			<form method="post"> 
 				<fieldset>
 					<legend>Login - enter Username and password</legend>
 					<p id="' . self::$messageId . '">' . $message . '</p>
