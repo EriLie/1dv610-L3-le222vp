@@ -100,6 +100,24 @@ class Database {
         return $allNotesFromUser;
     }
 
+    public function getAllPublicNotes() {
+        $allPublicNotes = [];
+        $isPublic = true; // The value in the database for public is a boolean
+
+        $stmt = $this->mysqli->prepare("SELECT id, author, title, content, public, created FROM notes WHERE public=?;");
+        $stmt->bind_param('s', $isPublic);
+        $stmt->execute();
+
+        $stmt->bind_result($id, $author, $title, $content, $public, $created);
+
+        while ($stmt->fetch()) {            
+            $noteObject = new NoteModel($id, $author, $title, $content, $public, $created);
+            $allPublicNotes[] = $noteObject;
+        }
+
+        return $allPublicNotes;
+    }
+
     public function getUserFromCookie($cookieString) {
         // Todo
         return false;

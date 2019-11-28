@@ -16,19 +16,22 @@ class NoteView {
     private static $deleteNote = 'NoteView::DeleteNote';
 
     public function renderPublicNoteView() {
-        return '
-            <div>
-                <p>alla  publika inlägg  </p>
-            </div>
-
-            <div>
-                <p>Och fler</p>
-            </div>
-        
-        ';
+        return "<div>" . $this->printAllPublicNotes() . "</div>";
     }
 
-    
+    private function printAllPublicNotes() {
+        $database = new \Model\Database();
+        $publicNotes = $database->getAllPublicNotes();
+        $notesInHTML = '';
+
+        foreach ($publicNotes as $oneNote) {
+            $htmlNote = "<br><fieldset>" . $this->printOneNote($oneNote) . "</fieldset>";
+            $notesInHTML .= $htmlNote;
+        }
+
+        return '<div class="allPublicNotesOnPage">' . $notesInHTML . '</div>';
+    }
+
     public function renderWhenLoggedIn() {
         return "<div>" . $this->addNewNoteForm() . $this->printLoggedInUserNotes() . "</div>";
     }
