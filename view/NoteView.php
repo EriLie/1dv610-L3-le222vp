@@ -29,7 +29,7 @@ class NoteView {
 
     
     public function renderWhenLoggedIn() {
-        return $this->addNewNoteForm() . $this->printLoggedInUserNotes();
+        return "<div>" . $this->addNewNoteForm() . $this->printLoggedInUserNotes() . "</div>";
     }
 
     public function addNewNoteForm() {
@@ -60,16 +60,14 @@ class NoteView {
     public function printLoggedInUserNotes() {
         // TODO Not a good solution but it works... View - readonly - Model
         $database = new \Model\Database();
-        return $database->getNotesFromLoggedInUser();
-        
-        //
-        
-        /* 
-        '
-            <br>
+        $oneUsersNotes = $database->getNotesFromLoggedInUser();
+        $notesInHTML = '';
 
-        
-        ';*/
+        foreach ($oneUsersNotes as $oneNote) {
+            
+        }
+
+        return $notesInHTML;
     }
 
     public function printOneNote() {

@@ -96,7 +96,8 @@ class Database {
             $noteObject = new NoteModel($id, $author, $title, $content, $public, $created);
             $allNotesFromUser[] = $noteObject;
         }
-        
+
+        return $allNotesFromUser;
     }
 
     public function getUserFromCookie($cookieString) {
