@@ -4,13 +4,25 @@ namespace Controller;
 
 require_once('model/Database.php');
 require_once('model/NoteModel.php');
+require_once('view/NoteView.php');
+
 
 class NoteController {
-
     public function __construct() {
         $this->database = new \Model\Database();
         $this->state = new \Model\StateModel();
+        //$this->noteView = new \View\NoteView(); // testförsök
     } 
+
+    public function run($noteView) {
+        if ($noteView->addNewNotePost()) {
+            $this->saveAddedNote($noteView);
+        }
+
+        if ($noteView->deleteNotePost()) {
+            $this->deleteOneNote($noteView);
+        }
+    }
 
     public function saveAddedNote($noteView) {
         $id = null; // Only NoteModel need id, the database has auto increment

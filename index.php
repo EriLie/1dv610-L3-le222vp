@@ -8,7 +8,6 @@ require_once("Application.php");
 require_once("Settings.php");
 
 session_start();
-//$settings = new Settings();
 
 $app = new Application();
 $app->run();

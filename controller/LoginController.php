@@ -15,23 +15,29 @@ class LoginController {
 
     private $database;
 
-    public function __construct($logInView) {
-        $this->logInView = $logInView;
+    public function __construct() {
+        //$this->logInView = $logInView;
         $this->database = new \Model\Database();
         $this->cookieModel = new \Model\CookieModel();
         $this->state = new \Model\StateModel();
-        /*
-            X - Kolla session login -> "SessionModel" -> StateModel
+    }
 
-            X - kolla cookie login -> CookieModel
+    public function run($logInView) {
+        $this->logInView = $logInView;
 
-            - Logga in ifall användare vill logga in
-            - Logga ut ifall användare vill logga ut
-            - Måste ha en databaskoppling eller åtminstone Data Access Object -> INGEN ARRAY!!!
-            
-            
-        */
+        if ($this->state->isLoggedIn()) {
+            if ($logInView->userClickedLogOut()) {
+                $this->logout();
+            }
+        } else if (!$this->state->isLoggedIn()) {
+            if ($logInView->submitPost()) {
+                $this->tryLogin();
+            }
 
+            if ($logInView->controlIfLoggedInWithCookie()) {
+                $this->state->setStateLoggedIn();
+            }
+        }
     }
     
     public function checkIfLoggedIn() : bool { // ANVÄNDS KANSKE INTE?? Kolla upp!

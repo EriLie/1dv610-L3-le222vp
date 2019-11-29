@@ -14,8 +14,6 @@ require_once('model/RegisterModel.php');
 require_once('model/StateModel.php');
 
 class Application {
-    
-    //CREATE OBJECTS OF THE VIEWS
     private $logInView;
     private $dateView;
     private $layoutView;
@@ -39,7 +37,7 @@ class Application {
         $this->state = new \Model\StateModel();
 
         $this->registerController = new \Controller\RegisterController($this->registerView, $this->registerModel);
-        $this->loginController = new \Controller\LoginController($this->logInView);  
+        $this->loginController = new \Controller\LoginController();  
         $this->noteController = new \Controller\NoteController();   
     }
     
@@ -54,47 +52,17 @@ class Application {
     }
     
 	private function changeState() {
+        $this->registerController->checkRegistrationPost();
 
-        if (!$this->state->isLoggedIn()) {
-            // Kolla inloggning med cookies
-            $tryToRegister = $this->registerController->checkRegistrationPost();
-             
-            if ($this->logInView->submitPost()) {
-                $this->loginController->tryLogin();
-            } 
-
-            if ($this->logInView->controlIfLoggedInWithCookie()) {
-                $this->state->setStateLoggedIn();
-            }
-
-        } else if ($this->state->isLoggedIn()) {
-            if ($this->logInView->userClickedLogOut()) {
-                $this->loginController->logout();
-            }
-            
-            // TODO om nytt inlägg POST
-            if ($this->noteView->addNewNotePost()) {
-                $this->noteController->saveAddedNote($this->noteView);
-            }
-
-            // TODO om deleta inlägg POST
-            if ($this->noteView->deleteNotePost()) {
-                $this->noteController->deleteOneNote($this->noteView);
-            }
-            
-        }
+        $this->loginController->run($this->logInView);
+        $this->noteController->run($this->noteView);
 
         $this->isLoggedIn = $this->state->isLoggedIn();
 		$this->goToRegister = $this->logInView->checkIfUserWantsToRegister();
     }
     
 	private function generateOutput() {
-        //skapa layout här coh skicka in data i konstructorn??
-
-        if ($this->isLoggedIn) {
-
-        }
-
+        // TODO NOT OK with so many arguments... It's really bad...
         $this->layoutView->render(
                 $this->isLoggedIn,
                 $this->logInView, 
@@ -103,16 +71,5 @@ class Application {
                 $this->goToRegister,
                 $this->noteView
         );
-
-        // TODO Instead of one render with TO MANY arguments...
-        /* 
-        if ($this->isLoggedIn) {
-            // Gå till loggedIn view
-        } else if ($this->goToRegister) {
-            // go to register view
-        } else {
-            // go to log in view
-        }
-        */
 	}
 }
