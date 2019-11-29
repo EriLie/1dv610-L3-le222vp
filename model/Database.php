@@ -2,26 +2,22 @@
 
 namespace Model;
 
+require_once('model/NoteModel.php');
+
 use Settings;
 use StateModel;
 
-require_once('model/NoteModel.php');
 
-use \Model\NoteModel;
-
-
-// TODO shoud have a class for connect and different classes for the different tables
+// TODO shoud have one class for connect and then different classes for the different tables (notes and users). Not everything is together...
 class Database {
 
     private $mysqli;
     private $settings; 
     private $state;
 
-
     public function __construct() {
         $this->settings = new \Settings(); 
         $this->state = new \Model\StateModel();
-
 
         try {
             $this->mysqli = new \mysqli( 
@@ -37,21 +33,17 @@ class Database {
     }
 
     public function isAuthenticatedUser($username, $password) : bool {
-
         $stmt = $this->mysqli->prepare("SELECT * FROM user WHERE BINARY username=? AND BINARY hashpassword=?;");
         $stmt->bind_param('ss', $username, $password);
         $stmt->execute();
         
-        $stmt->store_result(); // Why?
+        $stmt->store_result();
         
         if ($stmt->num_rows() >= 1) {
-            
             $this->state->setStateLoggedIn();
-            //$stmt->close();
             return true;
-        } else {
-           // $this->checkIfUserExist(); behövs kanske inte?
         }
+
         return false;
     }
 
@@ -77,19 +69,36 @@ class Database {
         }       
     }
 
+    public function saveNote($oneNote) {
+var_dump($oneNote);
+
+        $author = $oneNote->getAuthor();
+        $title = $oneNote->getTitle();
+        $content = $oneNote->getContent();
+        $public = $oneNote->getPublic();
+        $created  = $oneNote->getCreated();
+
+        $stmt = $this->mysqli->prepare("INSERT INTO notes (author, title, content, public, created) VALUES (?, ?, ?, ?, ?);");
+        $stmt->bind_param('sssis', $author, $title, $content, $public, $created);
+        $stmt->execute();
+/*
+        if (!$stmt->execute()) {
+            echo "Något gick fel!"; 
+            echo "Felmeddelande: " . $stmt->error;
+        }
+ */
+        //printf("Error: %s.\n", $stmt->error);
+    }
+
+    // TODO There's a lot of duplicated code and that sucks. Should be severel smaller methods.
     public function getNotesFromLoggedInUser() { 
         $loggedInUser = $this->state->getLoggedInUsername();
         $allNotesFromUser = [];
 
-        $stmt = $this->mysqli->prepare("SELECT id, author, title, content, public, created FROM notes WHERE author=?;");
+        $stmt = $this->mysqli->prepare("SELECT id, author, title, content, public, created FROM notes WHERE author=? ORDER BY id DESC;");
         $stmt->bind_param('s', $loggedInUser);
         $stmt->execute();
 
-        //$stmt->store_result();
-        //var_dump($stmt->store_result()); 
-        //printf("Number of rows: %d. \n", $stmt->num_rows);
-
-        // Bind result to variables
         $stmt->bind_result($id, $author, $title, $content, $public, $created);
 
         while ($stmt->fetch()) {            
@@ -104,8 +113,8 @@ class Database {
         $allPublicNotes = [];
         $isPublic = true; // The value in the database for public is a boolean
 
-        $stmt = $this->mysqli->prepare("SELECT id, author, title, content, public, created FROM notes WHERE public=?;");
-        $stmt->bind_param('s', $isPublic);
+        $stmt = $this->mysqli->prepare("SELECT id, author, title, content, public, created FROM notes WHERE public=? ORDER BY id DESC;");
+        $stmt->bind_param('i', $isPublic);
         $stmt->execute();
 
         $stmt->bind_result($id, $author, $title, $content, $public, $created);
@@ -118,8 +127,4 @@ class Database {
         return $allPublicNotes;
     }
 
-    public function getUserFromCookie($cookieString) {
-        // Todo
-        return false;
-    }
 }

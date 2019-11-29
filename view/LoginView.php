@@ -59,7 +59,7 @@ class LoginView {
 		return isset($_POST[self::$keep]);
 	}
     
-  public function handleUsernamePost() : bool {
+    public function handleUsernamePost() : bool {
         $user = $_POST[self::$name];
 
         if(empty($user)) {

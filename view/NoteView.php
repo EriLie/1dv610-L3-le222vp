@@ -7,10 +7,8 @@ require_once('model/Database.php');
 
 class NoteView {
 
-
-
     private static $noteTitle = 'NoteView::NoteTitle';
-    private static $noteContext = 'NoteView::NoteContext';
+    private static $noteContent = 'NoteView::NoteContent';
     private static $notePublic = 'NoteView::NotePublic';
     private static $submitNewNote = 'NoteView::submitNewNote';
     private static $deleteNote = 'NoteView::DeleteNote';
@@ -46,7 +44,7 @@ class NoteView {
                     <br>
 
                     <p>Thoughts of the day:  </p>
-                    <textarea name="' . self::$noteContext . '" cols="40" rows="10" id="' . self::$noteContext . '" value="" ></textarea>
+                    <textarea type="text" name="' . self::$noteContent . '" cols="40" rows="10" id="' . self::$noteContent . '" ></textarea>
                     <br>
 
                     <p>Make it public:  </p>                    
@@ -60,6 +58,22 @@ class NoteView {
             </form> 
         ';
     }
+
+    public function getNoteTitle() {
+        return $_POST[self::$noteTitle];
+    }
+
+    public function getNoteContent() {
+        return $_POST[self::$noteContent];
+    }
+
+    public function isPublicPost() : bool {
+		return isset($_POST[self::$notePublic]);
+	}
+
+    public function addNewNotePost() : bool {
+		return isset($_POST[self::$submitNewNote]);
+	}
 
     private function printLoggedInUserNotes() {
         // TODO Not a good solution but it works... View - readonly - Model
@@ -97,5 +111,9 @@ class NoteView {
             </form>
         ';
     }
+
+    public function deleteNotePost() : bool {
+		return isset($_POST[self::$deleteNote]);
+	}
 
 }

@@ -2,6 +2,7 @@
 
 require_once('controller/RegisterController.php');
 require_once('controller/LoginController.php');
+require_once('controller/NoteController.php');
 
 require_once('view/LayoutView.php');
 require_once('view/LoginView.php');
@@ -38,7 +39,8 @@ class Application {
         $this->state = new \Model\StateModel();
 
         $this->registerController = new \Controller\RegisterController($this->registerView, $this->registerModel);
-        $this->loginController = new \Controller\LoginController($this->logInView);       
+        $this->loginController = new \Controller\LoginController($this->logInView);  
+        $this->noteController = new \Controller\NoteController();   
     }
     
 	public function run() {
@@ -57,7 +59,6 @@ class Application {
             // Kolla inloggning med cookies
             $tryToRegister = $this->registerController->checkRegistrationPost();
              
-
             if ($this->logInView->submitPost()) {
                 $this->loginController->tryLogin();
             } 
@@ -66,8 +67,21 @@ class Application {
                 $this->state->setStateLoggedIn();
             }
 
-        } else if ($this->logInView->userClickedLogOut()) {
-            $this->loginController->logout();
+        } else if ($this->state->isLoggedIn()) {
+            if ($this->logInView->userClickedLogOut()) {
+                $this->loginController->logout();
+            }
+            
+            // TODO om nytt inlägg POST
+            if ($this->noteView->addNewNotePost()) {
+                $this->noteController->saveAddedNote($this->noteView);
+            }
+
+            // TODO om deleta inlägg POST
+            if ($this->noteView->deleteNotePost()) {
+                
+            }
+            
         }
 
         $this->isLoggedIn = $this->state->isLoggedIn();
