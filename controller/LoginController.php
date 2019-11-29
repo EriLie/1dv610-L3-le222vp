@@ -2,23 +2,16 @@
 
 namespace Controller;
 
-// require_once('model/UserCredentialsModel.php');
 require_once('model/Database.php');
-//require_once('model/UserLoginModel.php');
 require_once('model/StateModel.php');
-require_once('model/CookieModel.php');
 
 class LoginController {
     private $logInView;
-    private $cookieModel;
     private $state;
-
     private $database;
 
     public function __construct() {
-        //$this->logInView = $logInView;
         $this->database = new \Model\Database();
-        $this->cookieModel = new \Model\CookieModel();
         $this->state = new \Model\StateModel();
     }
 
@@ -29,7 +22,7 @@ class LoginController {
             if ($logInView->userClickedLogOut()) {
                 $this->logout();
             }
-        } else if (!$this->state->isLoggedIn()) {
+        } else {
             if ($logInView->submitPost()) {
                 $this->tryLogin();
             }
@@ -39,36 +32,14 @@ class LoginController {
             }
         }
     }
-    
-    public function checkIfLoggedIn() : bool { // ANVÄNDS KANSKE INTE?? Kolla upp!
-        $loggedIn = false;
-       
-        if ($this->state->isLoggedIn()) 
-        {
-            $loggedIn = true;
-        } 
-        else if ($this->cookieModel->cookieExists($this->logInView->getCookieName())) 
-        {
-            
-            // TODO
-            $this->database->getUserFromCookie();
-            // 2. Cookie?
-            // - check towards database
-            $loggedIn = true;            
-        }
 
-        return $loggedIn;
-    }
-
-    public function tryLogin() {
-     
+    private function tryLogin() {
         if ($this->logInView->handleUsernamePost()) {
             if ($this->logInView->handlePasswordPost()) {
-                //$this->logInView->handleKeep(); // TODO WHAT?
 
                 $successfullLogin = $this->database->isAuthenticatedUser(
-                    $this->logInView->getUsername(), 
-                    $this->logInView->getPassword(), 
+                    $this->logInView->getUsername(),
+                    $this->logInView->getPassword(),
                     $this->logInView->isKeepPost()
                 );
                 
@@ -80,40 +51,16 @@ class LoginController {
                     if ($this->logInView->isKeepPost()) {
                         $this->logInView->setCookie();
                     }
-                    
                    
                 } else {
                     $this->logInView->handleNameOrPwd();
                 }                    
             }
         }
-        
-        
-        
-            
-            // TODO Do login stuff
-
-            //hända nör det loggat in sätta isloggedIn
-            
-            // Set Session "state"
-            // Set view to say "welcome ..."
-
-            // if ($userLoginModel->isKeepLoggedIn()) {
-                // Set cookie
-                // set view to say "welcome by cookie"
-                
-            // }
-        
-    
     }
     
-    public function logout() {
+    private function logout() {
+        // TODO should also remove cookie
         $this->state->logOut();
     }
-
-    public function getBoolIsLoggedIn() {
-        return false;
-    }
-  
-  
 }

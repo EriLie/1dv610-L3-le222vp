@@ -21,8 +21,7 @@ class RegisterController {
         $this->database = new \Model\Database();
     }
 
-    public function checkRegistrationPost() {
-          
+    public function checkRegistrationPost() {          
         if ($this->registerView->addRegPost()) {
            
             if ($this->registerView->usernamePost()) {
@@ -40,7 +39,6 @@ class RegisterController {
             if($this->registerView->pwdPost()) {
                 $newpassword = $this->registerView->getPwd();
                 
-                //var_dump($this->registerView->getPwd());
                 if ($this->registerModel->passwordOkLength($newpassword)) {
                     
                     if ($this->registerView->pwdRepeatPost()) {
@@ -56,16 +54,11 @@ class RegisterController {
             }
 
             if ($this->nameOK && $this->passwordOK) {
-                
-                //add new user TODO
                 $this->database->saveUser($this->registerView->getNewUsername(), $this->registerView->getPwd());
-                // TODO sätta session för ny registrering i view $this->
             } else {
-               
                 $this->registerView->createMessage($this->nameTaken);
             }
-        }
-        
+        }        
     }
 
     public function checkIfUsernameTaken($name) : bool {

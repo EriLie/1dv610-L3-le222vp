@@ -10,7 +10,7 @@ class RegisterView {
 	private static $addRegistration = 'RegisterView::Register';
 
     private $message = '';
-    private $minCharUsername = 3; // TODO not hardcoded in view!
+    private $minCharUsername = 3;
     private $minCharpassword = 6;
     
     private $newUsername;
@@ -30,7 +30,6 @@ class RegisterView {
     }
 
     public function response($message) {
-
         return '
             <h2>Register new user</h2>
             <form action="?register" method="post">
@@ -77,37 +76,18 @@ class RegisterView {
 
             if($nameTaken || $_POST[self::$username] == '') {
                 $this->message .= Messages::$usernameTaken;
-            }
-
-            
-            
+            }            
         }
-
     }
 
     public function addRegPost() : bool {
-
         return isset($_POST[self::$addRegistration]) ? true : false;
-        //return isset($_POST[self::$addRegistration]);
     }
 
     public function usernamePost() : bool {
-         
-
         if(isset($_POST[self::$username])) {
-    /*         TODO specialtecken
-            $inputName = $_POST[self::$username];
-        echo $inputName;
-        echo " mellan ";
-            $allowedLetters = preg_replace("/[^a-zA-Z0-9\s]/", "", $inputName);
-        echo $allowedLetters;
-
-
-            $this->newUsername = $allowedLetters; 
-
-    */        
+            // TODO special chars need to be taken care of
             $this->newUsername = htmlspecialchars($_POST[self::$username]);
-
             return true;
         } else {
             return false;
@@ -131,5 +111,4 @@ class RegisterView {
             return false;
         }
     }
-
 }

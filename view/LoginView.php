@@ -5,7 +5,7 @@ namespace View;
 require_once('Messages.php');
 require_once('model/StateModel.php'); // ? 
 
-// TODO string dependency, make static variables!
+// TODO string dependency with POST och GET, make static variables!
 
 class LoginView {
     private static $submitLogin = 'LoginView::Login';
@@ -19,11 +19,9 @@ class LoginView {
 
 	private $message = '';
 	
-	
     private $inputPostName = '';
 	private $hashPassword = '';
 	
-
     public function getUsername() {
         return $this->inputPostName;
     }
@@ -40,11 +38,9 @@ class LoginView {
 		return isset($_POST[self::$submitLogin]);
 	}
 
-	
-    public function checkIfUserWantsToRegister() : bool { //TOGO WHY GET???
+    public function checkIfUserWantsToRegister() : bool {
         return isset($_GET['register']);
     }
-	
 	
 	public function userClickedLogOut() : bool {
 		if(isset($_POST[self::$logout])) {
@@ -102,7 +98,6 @@ class LoginView {
 
     public function controlIfLoggedInWithCookie() : bool {
 	    if (isset($_COOKIE[self::$cookieName])) {
-			// if jämföra namn
 			$this->message = Messages::$welcomeCookie;
 			return true;
 		} else {
@@ -120,8 +115,6 @@ class LoginView {
 	public function response($isLoggedIn) {
 		$response;
 
-
-	
 		if ($isLoggedIn) {
 			$this->emptyMessage();
 			$response = $this->generateLogoutButtonHTML($this->message);			

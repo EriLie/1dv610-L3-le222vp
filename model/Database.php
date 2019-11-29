@@ -7,7 +7,6 @@ require_once('model/NoteModel.php');
 use Settings;
 use StateModel;
 
-
 // TODO shoud have one class for connect and then different classes for the different tables (notes and users). Not everything is together...
 class Database {
 
@@ -28,7 +27,7 @@ class Database {
             );
         }
         catch (\Exception $e) {
-            throw new \Exception("Failed to connect to MySQL, action aborted"); //TODO
+            throw new \Exception("Failed to connect to MySQL, action aborted");
         }
     }
 
@@ -42,9 +41,9 @@ class Database {
         if ($stmt->num_rows() >= 1) {
             $this->state->setStateLoggedIn();
             return true;
-        }
-
-        return false;
+        } else {
+            return false;
+        }        
     }
 
     public function saveUser($name, $pwd) {        
@@ -108,7 +107,7 @@ class Database {
 
     public function getAllPublicNotes() {
         $allPublicNotes = [];
-        $isPublic = true; // The value in the database for public is a boolean
+        $isPublic = true; // The value in the database for public is a boolean and should be true if public
 
         $stmt = $this->mysqli->prepare("SELECT id, author, title, content, public, created FROM notes WHERE public=? ORDER BY id DESC;");
         $stmt->bind_param('i', $isPublic);

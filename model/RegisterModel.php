@@ -22,8 +22,4 @@ class RegisterModel {
             return false;
         }
     }
-
-    public function checkIfUserWantRegisterView() {
-        
-    }
 }

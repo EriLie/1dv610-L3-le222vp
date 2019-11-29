@@ -42,10 +42,6 @@ class LayoutView {
         
     }
 
-    public function userWantsToRegister() {
-        //return $this->state->checkIfUserWantsToRegister();
-    }
-
     private function presentLink($isLoggedIn, $goToRegister) {
         $link = '';
         
@@ -73,10 +69,6 @@ class LayoutView {
         return $response;
     }
     
-    private function checkIfRegister($regV) {
-        //$regV->render();
-    }
-      
     private function renderIsLoggedIn($isLoggedIn) {
         if ($isLoggedIn) {
             return '<h2>Logged in</h2>';

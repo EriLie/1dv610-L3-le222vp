@@ -19,7 +19,6 @@ class NoteModel {
         $this->created = $created;
     }
 
-    // Vi behöver getters?
     public function getId() { return $this->id; }
     public function getAuthor() { return $this->author; }
     public function getTitle() { return $this->title; }

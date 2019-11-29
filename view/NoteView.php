@@ -4,7 +4,6 @@ namespace View;
 
 require_once('model/Database.php');
 
-
 class NoteView {
 
     private static $noteTitle = 'NoteView::NoteTitle';
@@ -120,17 +119,12 @@ class NoteView {
     }
 
     public function deleteNotePost() : bool {
-        // Need more for security, so the user is the owner, and that it is the right note and not corrupted in inspector
+        // Need more for security, check the user is the owner, and that it is the right note and not corrupted in inspector
         if (isset($_POST[self::$deleteNote])) {
             $this->noteIdToDelete = $_POST[self::$noteId];
             return true;
         } else {
             return false;
         }
-        //echo $this->noteIdToDelete;
-        //var_dump($_POST[self::$noteId]);
-        //echo is_numeric($_POST[self::$noteId]);
-		
 	}
-
 }
