@@ -121,12 +121,16 @@ class NoteView {
 
     public function deleteNotePost() : bool {
         // Need more for security, so the user is the owner, and that it is the right note and not corrupted in inspector
-        $this->noteIdToDelete = $_POST[self::$noteId];
-
+        if (isset($_POST[self::$deleteNote])) {
+            $this->noteIdToDelete = $_POST[self::$noteId];
+            return true;
+        } else {
+            return false;
+        }
         //echo $this->noteIdToDelete;
         //var_dump($_POST[self::$noteId]);
         //echo is_numeric($_POST[self::$noteId]);
-		return isset($_POST[self::$deleteNote]);
+		
 	}
 
 }

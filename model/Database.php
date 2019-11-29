@@ -85,7 +85,6 @@ class Database {
         $stmt = $this->mysqli->prepare("DELETE FROM notes WHERE id=?;");
         $stmt->bind_param('i', $id);
         $stmt->execute();
-
     }
 
     // TODO There's a lot of duplicated code and that sucks. Should be severel smaller methods.
