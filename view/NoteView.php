@@ -12,6 +12,13 @@ class NoteView {
     private static $notePublic = 'NoteView::NotePublic';
     private static $submitNewNote = 'NoteView::submitNewNote';
     private static $deleteNote = 'NoteView::DeleteNote';
+    private static $noteId = 'NoteView::NoteId';
+
+    private $noteIdToDelete;
+
+    public function getNoteIdToDelete() : int {
+        return $this->noteIdToDelete;
+    }
 
     public function renderPublicNoteView() {
         return "<div>" . $this->printAllPublicNotes() . "</div>";
@@ -106,13 +113,19 @@ class NoteView {
     private function addDeleteButtonToOneNote($id) : string {
         return '
             <form method="post">
-                <input type="hidden" name="noteId" value="' . $id . '">
+                <input type="hidden" name="' . self::$noteId . '" value="' . $id . '">
                 <input type="submit" name="' . self::$deleteNote . '" value="Delete" />
             </form>
         ';
     }
 
     public function deleteNotePost() : bool {
+        // Need more for security, so the user is the owner, and that it is the right note and not corrupted in inspector
+        $this->noteIdToDelete = $_POST[self::$noteId];
+
+        //echo $this->noteIdToDelete;
+        //var_dump($_POST[self::$noteId]);
+        //echo is_numeric($_POST[self::$noteId]);
 		return isset($_POST[self::$deleteNote]);
 	}
 

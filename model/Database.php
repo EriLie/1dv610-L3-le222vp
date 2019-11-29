@@ -70,8 +70,6 @@ class Database {
     }
 
     public function saveNote($oneNote) {
-var_dump($oneNote);
-
         $author = $oneNote->getAuthor();
         $title = $oneNote->getTitle();
         $content = $oneNote->getContent();
@@ -81,13 +79,13 @@ var_dump($oneNote);
         $stmt = $this->mysqli->prepare("INSERT INTO notes (author, title, content, public, created) VALUES (?, ?, ?, ?, ?);");
         $stmt->bind_param('sssis', $author, $title, $content, $public, $created);
         $stmt->execute();
-/*
-        if (!$stmt->execute()) {
-            echo "Något gick fel!"; 
-            echo "Felmeddelande: " . $stmt->error;
-        }
- */
-        //printf("Error: %s.\n", $stmt->error);
+    }
+
+    public function deleteNote($id) {
+        $stmt = $this->mysqli->prepare("DELETE FROM notes WHERE id=?;");
+        $stmt->bind_param('i', $id);
+        $stmt->execute();
+
     }
 
     // TODO There's a lot of duplicated code and that sucks. Should be severel smaller methods.

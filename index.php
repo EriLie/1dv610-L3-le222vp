@@ -13,19 +13,3 @@ session_start();
 $app = new Application();
 $app->run();
 
-
-
-// TODO should not be hardcoded!
-//$isLoggedIn = false; // should get in från UserCredentialsModel
-
-// Skapa MasterController, controller(model, view)
-
-// TODO this looks baaaaad
-//$layoutV->render($isLoggedIn, $logInV, $dateV, $registerV, $newUserRegister);
-
-/*controller, kolla state, kolla input, ev ändra state
-
-rendera? 
-
-*/
-//echo "här kommer med";

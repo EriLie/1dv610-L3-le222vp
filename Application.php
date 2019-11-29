@@ -79,7 +79,7 @@ class Application {
 
             // TODO om deleta inlägg POST
             if ($this->noteView->deleteNotePost()) {
-                
+                $this->noteController->deleteOneNote($this->noteView);
             }
             
         }
