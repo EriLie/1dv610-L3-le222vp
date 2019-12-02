@@ -22,6 +22,8 @@ class NoteController {
     }
 
     private function saveAddedNote($noteView) {
+        // TODO should validate that all inputs has value/right type/not bad
+
         $id = null; // Only NoteModel need id, the database has auto increment
         $author = $this->state->getLoggedInUsername();
         $title = $noteView->getNoteTitle();

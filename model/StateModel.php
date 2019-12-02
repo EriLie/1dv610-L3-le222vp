@@ -5,8 +5,6 @@ namespace Model;
 
 // Basically sessionModel, handles session
 class StateModel {
-
-    
     public function setStateLoggedIn() {
         $_SESSION['userLoggedIn'] = true;
     }

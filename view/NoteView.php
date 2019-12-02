@@ -66,11 +66,11 @@ class NoteView {
     }
 
     public function getNoteTitle() {
-        return $_POST[self::$noteTitle];
+        return htmlspecialchars($_POST[self::$noteTitle]);
     }
 
     public function getNoteContent() {
-        return $_POST[self::$noteContent];
+        return htmlspecialchars($_POST[self::$noteContent]);
     }
 
     public function isPublicPost() : bool {
